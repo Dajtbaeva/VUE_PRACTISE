@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue practise #3</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container pt-5" id="app">
+      <div class="card center">
+        <div class="form-control">
+          <h1>{{title}}</h1>
+          <input type="text" @keyup.enter="addItem" ref="myInput" />
+        </div>
+
+        <ul class="list" v-if="items.length">
+          <li
+            class="list-item"
+            v-for="(item, i) in items"
+            @click.right.prevent="removeItem(i), log(item)"
+            :key="item"
+          >
+            <strong>{{item}}</strong>&nbsp;<input type="text" @click.stop />
+          </li>
+        </ul>
+        <h3 v-show="items.length === 0">Np items</h3>
+      </div>
+    </div>
+  </body>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="app.js"></script>
+</html>

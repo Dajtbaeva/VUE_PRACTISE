@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue practise #2</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container" id="app">
+      <div class="card">
+        <h1>{{title}}</h1>
+        <div class="form-control">
+          <input
+            type="text"
+            :placeholder="placeholder"
+            v-model="inputValue"
+            @keypress.enter="addToDo"
+            :style="{color: inputValue.length < 5 ? 'red' : 'darkgreen'}"
+          />
+        </div>
+        <button class="btn" v-on:click="addToDo">Add</button>
+        <hr />
+
+        <ul class="list" v-if="todos.length > 0">
+          <li class="list-item" v-for="(todo, idx) in todos">
+            <span :class="['bold', {'primary': todo.length > 5}]"
+              >{{toUpperCase(todo)}}</span
+            >
+            <button class="btn danger" @click="deleteTodo(idx)">Delete</button>
+          </li>
+          <hr />
+          <li>
+            <strong>Total todos: {{todos.length}}</strong> | Doubled:
+            {{doubledToDosComputed}}
+          </li>
+        </ul>
+        <div v-else>You haven't any todos</div>
+      </div>
+    </div>
+  </body>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="app.js"></script>
+</html>
