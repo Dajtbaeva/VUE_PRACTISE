@@ -4,7 +4,7 @@ const not = (val) => !val;
 
 export function useField(field) {
   const valid = ref(true);
-  const vvalue = ref(field.value);
+  const value = ref(field.value);
   const errors = reactive({});
   const touched = ref(false);
 
@@ -19,7 +19,7 @@ export function useField(field) {
     });
   };
 
-  watch(vvalue, reassign);
+  watch(value, reassign);
   reassign(field.value);
-  return { vvalue, valid, errors, touched, bblur: () => (touched.value = true) };
+  return { value, valid, errors, touched, bblur: () => (touched.value = true) };
 }

@@ -2,7 +2,7 @@
   <div class="container">
     <form class="card" @submit.prevent="submit">
       <h1>Auth</h1>
-
+      <!-- <pre>{{ form }}</pre> -->
       <div
         class="form-control"
         :class="{ invalid: !form.email.valid && form.email.touched }"
@@ -39,12 +39,17 @@
         >
       </div>
 
-      <button class="btn primary" type="submit">Submit</button>
+      <button class="btn primary" type="submit" :disabled="!form.valid">
+        Submit
+      </button>
     </form>
+    <UsersList></UsersList>
   </div>
 </template>
 <script>
 import { useForm } from "./use/form";
+import UsersList from "./components/UsersList.vue";
+
 const required = (val) => !!val;
 const minLength = (num) => (val) => val.length >= num;
 
@@ -62,9 +67,15 @@ export default {
     });
     console.log(form.email);
     console.log(form.password);
-    function submit() {}
+    function submit() {
+      console.log("Email:", form.email.value);
+      console.log("Password:", form.password.value);
+    }
 
     return { form, submit };
+  },
+  components: {
+    UsersList,
   },
 };
 </script>
