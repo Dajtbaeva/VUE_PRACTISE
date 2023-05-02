@@ -2,7 +2,7 @@
   <div class="container">
     <form class="card" @submit.prevent="submit">
       <h1>Auth</h1>
-      <!-- <pre>{{ form }}</pre> -->
+      <h3 v-if="error">{{ error }}</h3>
       <div
         class="form-control"
         :class="{ invalid: !form.email.valid && form.email.touched }"
@@ -43,10 +43,16 @@
         Submit
       </button>
     </form>
-    <UsersList></UsersList>
+    <Suspense v-if="submitted">
+      <UsersList />
+      <template #fallback>
+        <div class="loader"></div>
+      </template>
+    </Suspense>
   </div>
 </template>
 <script>
+import { ref, onErrorCaptured } from "vue";
 import { useForm } from "./use/form";
 import UsersList from "./components/UsersList.vue";
 
@@ -55,6 +61,8 @@ const minLength = (num) => (val) => val.length >= num;
 
 export default {
   setup() {
+    const submitted = ref(false);
+    const error = ref();
     const form = useForm({
       email: {
         value: "",
@@ -65,14 +73,21 @@ export default {
         validators: { required, minLength: minLength(8) },
       },
     });
-    console.log(form.email);
-    console.log(form.password);
+
     function submit() {
       console.log("Email:", form.email.value);
       console.log("Password:", form.password.value);
+      submitted.value = true;
     }
 
-    return { form, submit };
+    onErrorCaptured((e) => {
+      error.value = e.message;
+      submitted.value = false;
+      // console.log(error.value);
+      // console.log(submitted.value);
+    });
+
+    return { form, submit, submitted, error };
   },
   components: {
     UsersList,
